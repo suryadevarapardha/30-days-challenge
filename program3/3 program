@@ -1,1 +1,43 @@
 
+#include<stdio.h>
+int main(){
+float amount,km,rate,saved,balance,shipping,total;
+int customer;
+printf("Enter purchase amount:\n");
+scanf("%f",&amount);
+printf("Enter customer type (1=Student,2=Regular):\n");
+scanf("%d",&customer);
+printf("Enter delivery distance in km:\n");
+scanf("%f",&km);
+if(customer==1&&amount>=2000){
+rate=15;
+}
+else if(customer==1&&amount<2000){
+rate=10;
+}
+else if(customer==2&&amount>=3000){
+rate=8;
+}
+else{
+rate=0;
+}
+saved=amount*rate/100;
+balance=amount-saved;
+if(km<=5){
+shipping=40;
+}
+else if(km<=15){
+shipping=70;
+}
+else{
+shipping=100;
+}
+total=balance+shipping;
+printf("Purchase amount: Rs.%.2f\n",amount);
+printf("Discount Rate: %.2f%%\n",rate);
+printf("Discount Amount: Rs.%.2f\n",saved);
+printf("Amount After Discount: Rs.%.2f\n",balance);
+printf("Delivery Charges: Rs.%.2f\n",shipping);
+printf("Final payable amount: Rs.%.2f\n",total);
+return 0;
+}
