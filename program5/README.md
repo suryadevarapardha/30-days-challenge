@@ -1,5 +1,4 @@
-
-    5.if d==01. start
+1. start
 2. declare the variables
 3. display the menu(1.to solve linear equation,2.calculate factorial,3.solve quadratic equation,4.exit(
 4. read the user's choice to perform the operation
