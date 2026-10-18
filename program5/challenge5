@@ -1,1 +1,62 @@
-
+#include<stdio.h>
+#include<math.h>
+int main(){
+int operation,number,j,factorial;
+float p,q,r,solution,discriminant,roota,rootb;
+do{
+printf("enter the operation you want to perform\n");
+printf("enter 1 to solve linear equation\n");
+printf("enter 2 to calculate factorial\n");
+printf("enter 3 to solve quadratic equation\n");
+printf("enter 4 to exit\n");
+scanf("%d", &operation);
+switch(operation){
+case 1:
+printf("enter the values of a and b:");
+scanf("%f %f",&p,&q);
+if(p==0){
+if(q==0)
+printf("infinitely many solutions");
+else
+printf("no solution");}
+else{
+solution=-q/p;
+printf("x=%f",solution);}
+break;
+case 2:
+printf("enter a number from 0 to 12:");
+scanf("%d", &number);
+if(number<0||number>12)
+printf("invalid input");
+else{
+factorial=1;
+for(j=1;j<=number;j++){
+factorial=factorial*j;}
+printf("factorial=%d",factorial);}
+break;
+case 3:
+printf("enter the values of a,b,c:");
+scanf("%f %f %f", &p, &q, &r);
+if(p==0)
+printf("not a quadratic equation");
+else{
+discriminant=q*q-4*p*r;
+if(discriminant>0){
+roota=(-q+sqrt(discriminant))/(2*p);
+rootb=(-q-sqrt(discriminant))/(2*p);
+printf("two distinct real roots=%f %f",roota,rootb);}
+else if(discriminant==0){
+roota=-q/(2*p);
+printf("two equal real roots=%f",roota);}
+else
+printf("no real roots");}
+break;
+case 4:
+printf("existing program");
+break;
+default:
+printf("invalid choice!try again");}
+}
+while(operation!=4);
+return 0;
+}
