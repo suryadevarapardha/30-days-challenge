@@ -1,4 +1,5 @@
-1. start
+
+    5.if d==01. start
 2. declare the variables
 3. display the menu(1.to solve linear equation,2.calculate factorial,3.solve quadratic equation,4.exit(
 4. read the user's choice to perform the operation
@@ -22,7 +23,6 @@
     2.if p=0,display "not a quadratic equaton"
     3.otherwise,calculate the discriminant
     4.if d>0
-    5.if d==0
     6.otherwise display "no real roots"
     7.exit form case 3
     case 4:exit the program
