@@ -1,1 +1,95 @@
+#include<stdio.h>
+int main(){
+int a[15],n,i,j,count;
+int missing=0,duplicate=0,missingid=0,duplicateid=0;
+int r,target,invalid=0,pairs=0,targetcount=0;
+printf("enter values of n(5 to 15):\n");
+scanf("%d",&n);
+while(n<5||n>15)
+{
+printf("invalid n.enter again:\n");
+scanf("%d",&n);
+}
+printf("enter the ticket ids:\n");
+for(i=0;i<n;i++)
+{
+printf("ticket%d:",i+1);
+scanf("%d",&a[i]);
+while(a[i]<1||a[i]>n)
+{
+printf("invalid id.enter again:\n ");
+scanf("%d",&a[i]);
+}
+}
+printf("original scan sequence:\n");
+for(i=0;i<n;i++)
+{
+printf("%d",a[i]);
+}
+for(i=1;i<=n;i++)
+{
+count=0;
+for(j=0;j<n;j++)
+{
+if(a[j]==i)
+count++;
+}
+if(count==0)
+{
+missing++;
+missingid=i;
+}
+else if(count==2)
+{
+duplicate++;
+duplicateid=i;
+}
+else if(count!=1)
+{
+invalid=1;
+}
+}
+if(missing==1 && duplicate==1 && invalid==0)
+{
+printf("valid scan\n");
+printf("duplicate ticket id:%d\n",duplicateid);
+printf("missing ticket id:%d\n",missingid);
+for(i=0;i<n-1;i++)
+{
+for(j=i+1;j<n;j++)
+{
+if(a[i]>a[j] && a[i]!=a[j])
+{
+pairs++;
+printf("out of order pair:%d %d \n",a[i],a[j]);
+}
+}
+}
+printf("total no of out of order pairs:%d\n",pairs);
+printf("enter the last two digits of registration number:\n");
+scanf("%d",&r);
+while(r<0||r>99)
+{
+printf("enter a number (from 0 to 99):");
+scanf("%d",&r);
+}
+target=(r%n)+1;
+printf("target audit ticket id:%d\n",target);
+printf("positions:\n");
+for(i=0;i<n;i++)
+{
+if(a[i]==target)
+{
+printf("%d\n",i+1);
+targetcount++;
+}
+}
+printf("occurence count:%d\n",targetcount);
+}
+else
+{
+printf("invalid scan\n");
+}
+return 0;
+}
 
