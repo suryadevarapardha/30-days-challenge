@@ -1,1 +1,143 @@
-
+include<stdio.h>
+int main(){
+int a[6][6],n,i,t,j;
+int sum,max,rowmax=0,colmax=0;
+int d1=0,d2=0,bound=0;
+int count=0,hot=0;
+printf("Enter N: ");
+scanf("%d",&n);
+while(n<3||n>6)
+{
+printf("Invalid N. Enter again: ");
+scanf("%d",&n);
+}
+printf("Enter threshold: ");
+scanf("%d",&t);
+while(t<1||t>100)
+{
+printf("Invalid T. Enter again: ");
+scanf("%d",&t);
+}
+printf("Enter grid values:\n");
+for(i=0;i<n;i++)
+{
+for(j=0;j<n;j++)
+{
+printf("Enter value: ");
+scanf("%d",&a[i][j]);
+while(a[i][j]<0||a[i][j]>100)
+{
+printf("Invalid value. Enter again: ");
+scanf("%d",&a[i][j]);
+}
+}
+}
+printf("ROW TOTALS\n");
+for(i=0;i<n;i++)
+{
+sum=0;
+for(j=0;j<n;j++)
+sum+=a[i][j];
+printf("Row %d = %d\n",i+1,sum);
+if(sum>rowmax)
+rowmax=sum;
+}
+printf("Highest row total = %d\n",rowmax);
+printf("Highest rows: ");
+for(i=0;i<n;i++)
+{
+sum=0;
+for(j=0;j<n;j++)
+sum+=a[i][j];
+if(sum==rowmax)
+printf("%d ",i+1);
+}
+printf("COLUMN TOTALS\n");
+for(j=0;j<n;j++)
+{
+sum=0;
+for(i=0;i<n;i++)
+sum+=a[i][j];
+printf("Column %d = %d\n",j+1,sum);
+if(sum>colmax)
+colmax=sum;
+}
+printf("Highest column total = %d\n",colmax);
+printf("Highest columns: ");
+for(j=0;j<n;j++)
+{
+sum=0;
+for(i=0;i<n;i++)
+sum=0;
+for(i=0;i<n;i++)
+sum+=a[i][j];
+if(sum==colmax)
+printf("%d ",j+1);
+}
+max=a[0][0];
+for(i=0;i<n;i++)
+{
+for(j=0;j<n;j++)
+{
+if(a[i][j]>max)
+max=a[i][j];
+if(a[i][j]>=t)
+count++;
+}
+}
+printf("Highest risk = %d\n",max);
+printf("Positions: ");
+for(i=0;i<n;i++)
+{
+for(j=0;j<n;j++)
+{
+if(a[i][j]==max)
+printf("(%d,%d) ",i+1,j+1);
+}
+}
+printf("Cells>= T = %d\n",count);
+for(i=0;i<n;i++)
+{
+d1+=a[i][i];
+d2+=a[i][n-1-i];
+}
+printf("Main diagonal = %d\n",d1);
+printf("Secondary diagonal = %d\n",d2);
+if(d1==d2)
+printf("Diagonals are balanced\n");
+else
+printf("Diagonals are not balanced\n");
+for(i=0;i<n;i++)
+{
+for(j=0;j<n;j++)
+{
+if(i==0||j==0||i==n-1||j==n-1)
+bound+=a[i][j];
+}
+}
+printf("Boundary total = %d\n",bound);
+for(i=1;i<n-1;i++)
+{
+for(j=1;j<n-1;j++)
+{
+if(a[i][j]>a[i-1][j]&&
+a[i][j]>a[i+1][j]&&
+a[i][j]>a[i][j-1]&&
+a[i][j]>a[i][j+1]&&
+a[i][j]>=t)
+{
+printf("Hotspot at %d,%d\n",i+1,j+1);
+hot++;
+}
+}
+}
+if(hot==0)
+printf("No hotspots found\n");
+if(hot>0)
+printf("critical\n");
+else if(count>=n)
+printf("warning\n");
+else
+printf("normal\n");
+return 0;
+}
