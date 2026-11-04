@@ -1,132 +1,25 @@
 #include<stdio.h>
 #define ROWS 5
 #define COLS 8
-void initializeSeats(int a[ROWS][COLS])
-{
-int i,j;
-for(i=0;i<ROWS;i++)
-{
-for(j=0;j<COLS;j++)
-{
-a[i][j]=0;
-}
-}
-}
-void displaySeats(int a[ROWS][COLS])
-{
-int i,j;
-printf("0-Available 1-Booked\n");
-for(i=0;i<ROWS;i++)
-{
-printf("Row %d: ",i+1);
-for(j=0;j<COLS;j++)
-{
-printf("%d ",a[i][j]);
-}
-printf("\n");
-}
-}
-int bookSeat(int a[ROWS][COLS],int r,int c)
-{
-if(r>=1&&r<=5&&c>=1&&c<=8)
-{
-if(a[r-1][c-1]==0)
-{
-a[r-1][c-1]=1;
-return 1;
-}
-}
-return 0;
-}
-int cancelSeat(int a[ROWS][COLS],int r,int c)
-{
-if(r>=1&&r<=5&&c>=1&&c<=8)
-{
-if(a[r-1][c-1]==1)
-{
-a[r-1][c-1]=0;
-return 1;
-}
-}
-return 0;
-}
-int reserveGroup(int a[ROWS][COLS],int n)
-{
-int i,j,k,count;
-if(n<2||n>8)
-return 0;
-for(i=0;i<ROWS;i++)
-{
-for(j=0;j<=COLS-n;j++)
-{
-count=0;
-for(k=0;k<n;k++)
-{
-if(a[i][j+k]==0)
-count++;
-}
-if(count==n)
-{
-for(k=0;k<n;k++)
-a[i][j+k]=1;
-printf("Row: %d\n",i+1);
-printf("Seats: ");
-for(k=0;k<n;k++)
-printf("%d ",j+k+1);
-printf("\n");
-return 1;
-}
-}
-}
-return 0;
-}
-void displayReport(int a[ROWS][COLS])
-{
-int i,j,booked=0,max=0;
-int row[ROWS]={0};
-for(i=0;i<ROWS;i++)
-{
-for(j=0;j<COLS;j++)
-{
-if(a[i][j]==1)
-{
-booked++;
-row[i]++;
-}
-}
-}
-printf("\nTotal seats: 40\n");
-printf("Booked seats: %d\n",booked);
-printf("Available seats: %d\n",40-booked);
-printf("Occupancy percentage: %.2f%%\n",booked*100.0/40);
-for(i=0;i<ROWS;i++)
-{
-if(row[i]>max)
-max=row[i];
-}
-printf("Highest booked seats: %d\n",max);
-printf("Rows with highest bookings: ");
-for(i=0;i<ROWS;i++)
-{
-if(row[i]==max)
-printf("%d ",i+1);
-}
-printf("\n");
-}
+void initializeSeats(int seats[ROWS][COLS]);
+void displaySeats(int seats[ROWS][COLS]);
+int bookSeat(int seats[ROWS][COLS],int row,int col);
+int cancelSeat(int seats[ROWS][COLS],int row,int col);
+int reserveGroup(int seats[ROWS][COLS],int groupSize);
+void displayReport(int seats[ROWS][COLS]);
 int main()
 {
-int seats[ROWS][COLS];
-int choice,r,c,n;
+int seats[ROWS][COLS],choice,row,col,groupSize;
 initializeSeats(seats);
 do
 {
-printf("1.Display Seats\n");
-printf("2.Book Seat\n");
-printf("3.Cancel Booking\n");
-printf("4.Group Reservation\n");
-printf("5.Occupancy Report\n");
-printf("6.Exit\n");
-printf("Enter your choice: ");
+printf("\n1. display seats\n");
+printf("2. book one seat\n");
+printf("3. cancel booking\n");
+printf("4. group reservation\n");
+printf("5. occupancy report\n");
+printf("6. exit\n");
+printf("enter your choice: ");
 scanf("%d",&choice);
 switch(choice)
 {
@@ -134,41 +27,159 @@ case 1:
 displaySeats(seats);
 break;
 case 2:
-printf("Enter row and seat number: ");
-scanf("%d %d",&r,&c);
-if(bookSeat(seats,r,c))
-printf("Booking successful\n");
+printf("enter row and seat number: ");
+scanf("%d%d",&row,&col);
+if(bookSeat(seats,row,col))
+printf("seat booked successfully\n");
 else
-printf("Seat unavailable or invalid input\n");
+printf("seat booking failed\n");
 displaySeats(seats);
 break;
 case 3:
-printf("Enter row and seat number: ");
-scanf("%d %d",&r,&c);
-if(cancelSeat(seats,r,c))
-printf("Cancellation successful\n");
+printf("enter row and seat number: ");
+scanf("%d%d",&row,&col);
+if(cancelSeat(seats,row,col))
+printf("booking cancelled successfully\n");
 else
-printf("Invalid seat or seat is not booked\n");
+printf("cancellation failed\n");
 displaySeats(seats);
 break;
 case 4:
-printf("Enter group size (2-8): ");
-scanf("%d",&n);
-if(reserveGroup(seats,n))
-printf("Group booking successful\n");
-else
-printf("No suitable consecutive seats found\n");
+printf("enter group size: ");
+scanf("%d",&groupSize);
+if(reserveGroup(seats,groupSize))
+{
+printf("group reservation successful\n");
 displaySeats(seats);
+}
+else
+printf("group reservation failed\n");
 break;
 case 5:
 displayReport(seats);
 break;
 case 6:
-printf("Program terminated\n");
+printf("thank you\n");
 break;
 default:
-printf("Invalid choice\n");
+printf("invalid choice\n");
 }
 }while(choice!=6);
 return 0;
 }
+void initializeSeats(int seats[ROWS][COLS])
+{
+int i,j;
+for(i=0;i<ROWS;i++)
+{
+for(j=0;j<COLS;j++)
+seats[i][j]=0;
+}
+}
+void displaySeats(int seats[ROWS][COLS])
+{
+int i,j;
+printf("\n0 = available, 1 = booked\n");
+printf("     ");
+for(j=0;j<COLS;j++)
+printf("%d ",j+1);
+printf("\n");
+for(i=0;i<ROWS;i++)
+{
+printf("row %d: ",i+1);
+for(j=0;j<COLS;j++)
+printf("%d ",seats[i][j]);
+printf("\n");
+}
+}
+int bookSeat(int seats[ROWS][COLS],int row,int col)
+{
+if(row<1||row>ROWS||col<1||col>COLS)
+return 0;
+if(seats[row-1][col-1]==1)
+return 0;
+seats[row-1][col-1]=1;
+return 1;
+}
+int cancelSeat(int seats[ROWS][COLS],int row,int col)
+{
+if(row<1||row>ROWS||col<1||col>COLS)
+return 0;
+if(seats[row-1][col-1]==0)
+return 0;
+seats[row-1][col-1]=0;
+return 1;
+}
+int reserveGroup(int seats[ROWS][COLS],int groupSize)
+{
+int i,j,k,flag;
+if(groupSize<2||groupSize>8)
+return 0;
+for(i=0;i<ROWS;i++)
+{
+for(j=0;j<=COLS-groupSize;j++)
+{
+flag=1;
+for(k=0;k<groupSize;k++)
+{
+if(seats[i][j+k]==1)
+{
+flag=0;
+break;
+}
+}
+if(flag==1)
+{
+for(k=0;k<groupSize;k++)
+seats[i][j+k]=1;
+printf("group booked in row %d from seat %d to seat %d\n",i+1,j+1,j+groupSize);
+return 1;
+}
+}
+}
+return 0;
+}
+void displayReport(int seats[ROWS][COLS])
+{
+int i,j,booked=0,available=0,count[ROWS]={0},max=0;
+float percentage;
+for(i=0;i<ROWS;i++)
+{
+for(j=0;j<COLS;j++)
+{
+if(seats[i][j]==1)
+{
+booked++;
+count[i]++;
+}
+else
+available++;
+}
+}
+percentage=(booked*100.0)/(ROWS*COLS);
+for(i=0;i<ROWS;i++)
+{
+if(count[i]>max)
+max=count[i];
+}
+printf("\ntotal seats: %d\n",ROWS*COLS);
+printf("booked seats: %d\n",booked);
+printf("available seats: %d\n",available);
+printf("occupancy percentage: %.2f%%\n",percentage);
+printf("busiest row: ");
+if(max==0)
+printf("no bookings");
+else
+{
+for(i=0;i<ROWS;i++)
+{
+if(count[i]==max)
+printf("%d ",i+1);
+}
+}
+printf("\n");
+}
+
+
+
+
